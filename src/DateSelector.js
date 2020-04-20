@@ -43,8 +43,7 @@ function DateSelector() {
   const selectDay = (day) => {
     setCurrMonth(month);
     setCurrentDay(day);
-    setcurrentYear(year)
-    formatDate();
+    setcurrentYear(year);
   };
 
   let amount_days = 31;
@@ -66,21 +65,18 @@ function DateSelector() {
 
   // Formatted Date for view
   const formatDate = () => {
-    let day = currentDay;
-    let month = currentMonth;
-    let year = currentYear;
-    if (day < 10 && month + 1 > 9) {
-      setdisplayDate("0" + day + " / " + (month + 1) + " / " + year);
-    } else if (day > 9 && month + 1 < 10) {
-      setdisplayDate(day + " / " + "0" + (month + 1) + " / " + year);
+    if (currentDay < 10 && currentMonth + 1 > 9) {
+      setdisplayDate("0" + currentDay + " / " + (currentMonth + 1) + " / " + currentYear);
+    } else if (currentDay > 9 && currentMonth + 1 < 10) {
+      setdisplayDate(currentDay + " / " + "0" + (currentMonth + 1) + " / " + currentYear);
     } else {
-      setdisplayDate("0" + day + " / " + "0" + (month + 1) + " / " + year);
+      setdisplayDate("0" + currentDay + " / " + "0" + (currentMonth + 1) + " / " + currentYear);
     }
   };
 
   useEffect(() => {
     formatDate();
-  }, []);
+  }, [selectDay]);
 
   //Function for going to the previous month
   const clickPrevMonth = () => {
