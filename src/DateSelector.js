@@ -35,7 +35,7 @@ function DateSelector() {
   const [newMonth, setnewMonth] = useState(months[month] + " " + year);
   const [currentDay, setCurrentDay] = useState(day);
   const [currentMonth, setCurrMonth] = useState(month);
-  const [currentYear, setcurrentYear] = useState(year)
+  const [currentYear, setcurrentYear] = useState(year);
   const [displayDate, setdisplayDate] = useState(
     "0" + day + " / " + (month + 1) + " / " + year
   );
@@ -66,11 +66,23 @@ function DateSelector() {
   // Formatted Date for view
   const formatDate = () => {
     if (currentDay < 10 && currentMonth + 1 > 9) {
-      setdisplayDate("0" + currentDay + " / " + (currentMonth + 1) + " / " + currentYear);
+      setdisplayDate(
+        "0" + currentDay + " / " + (currentMonth + 1) + " / " + currentYear
+      );
     } else if (currentDay > 9 && currentMonth + 1 < 10) {
-      setdisplayDate(currentDay + " / " + "0" + (currentMonth + 1) + " / " + currentYear);
+      setdisplayDate(
+        currentDay + " / " + "0" + (currentMonth + 1) + " / " + currentYear
+      );
     } else {
-      setdisplayDate("0" + currentDay + " / " + "0" + (currentMonth + 1) + " / " + currentYear);
+      setdisplayDate(
+        "0" +
+          currentDay +
+          " / " +
+          "0" +
+          (currentMonth + 1) +
+          " / " +
+          currentYear
+      );
     }
   };
 
