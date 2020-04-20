@@ -1,14 +1,10 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "./DateSelector.css";
-// import ToggleMonths from "./SelectorFunctions/ToggleMonths";
 
 let date = new Date();
 let day = date.getDate();
 let month = date.getMonth();
 let year = date.getFullYear();
-let selectedDay = day;
-let selectedMonth = month;
-let selectedYear = year;
 
 function DateSelector() {
   const [dateContainer, openContainer] = useState(false);
@@ -37,46 +33,56 @@ function DateSelector() {
   ];
 
   const [newMonth, setnewMonth] = useState(months[month] + " " + year);
-  // const [selected, setselected] = useState("day");
-  // console.log(selected);
+  const [currentDay, setCurrentDay] = useState(day);
+  const [currentMonth, setCurrMonth] = useState(month);
+  const [currentYear, setcurrentYear] = useState(year)
+  const [displayDate, setdisplayDate] = useState(
+    "0" + day + " / " + (month + 1) + " / " + year
+  );
+
+  const selectDay = (day) => {
+    setCurrMonth(month);
+    setCurrentDay(day);
+    setcurrentYear(year)
+    formatDate();
+  };
 
   let amount_days = 31;
-  switch (month) {
-    case 1:
-      if (year % 4 === 0 && year !== 0) {
-        amount_days = 29;
-      } else {
-        amount_days = 28;
-      }
-      break;
-    case 3:
-      amount_days = 30;
-      break;
-    case 5:
-      amount_days = 30;
-      break;
-    case 8:
-      amount_days = 30;
-      break;
-    case 10:
-      amount_days = 30;
-      break;
-    default:
-      break;
+  if (month === 1) {
+    if (year % 4 === 0 && year !== 0) {
+      amount_days = 29;
+    } else {
+      amount_days = 28;
+    }
+  } else if (month === 3 || month === 5 || month === 8 || month === 10) {
+    amount_days = 30;
   }
+
   let dateHolder = [];
   for (let i = 0; i < amount_days; i++) {
     let days = i + 1;
     dateHolder.push(days);
-    if (
-      selectedDay === i + 1 &&
-      selectedMonth === month &&
-      selectedYear === year
-    ) {
-      // return <div className="day selected">{dateHolder[i]}</div>;
-    }
   }
 
+  // Formatted Date for view
+  const formatDate = () => {
+    let day = currentDay;
+    let month = currentMonth;
+    let year = currentYear;
+    if (day < 10 && month + 1 > 9) {
+      setdisplayDate("0" + day + " / " + (month + 1) + " / " + year);
+    } else if (day > 9 && month + 1 < 10) {
+      setdisplayDate(day + " / " + "0" + (month + 1) + " / " + year);
+    } else {
+      setdisplayDate("0" + day + " / " + "0" + (month + 1) + " / " + year);
+    }
+  };
+
+  useEffect(() => {
+    formatDate();
+  }, []);
+
+  //Function for going to the previous month
   const clickPrevMonth = () => {
     month--;
     if (month < 0) {
@@ -85,6 +91,8 @@ function DateSelector() {
     }
     setnewMonth(months[month] + " " + year);
   };
+
+  //Function for going to the next month
   const ClickNextMonth = () => {
     month += +1;
     if (month > 11) {
@@ -102,7 +110,8 @@ function DateSelector() {
 
       <div className="date-picker">
         <div className="selected-date" onClick={openDateContainer}>
-          {day+ " / "+ "0"+ (month+1) + " / " + year}
+          {/* {day + " / " + "0" + (month + 1) + " / " + year} */}
+          {displayDate}
         </div>
 
         <div
@@ -119,10 +128,18 @@ function DateSelector() {
           </div>
           <div className="days">
             {dateHolder.map((dateHolder) => (
-              <div className="day">{dateHolder}</div>
+              <div
+                className={
+                  dateHolder === currentDay && month === currentMonth
+                    ? "day selected"
+                    : "day"
+                }
+                onClick={() => selectDay(dateHolder)}
+              >
+                {dateHolder}
+              </div>
             ))}
           </div>
-          {/* <ToggleMonths /> */}
         </div>
       </div>
     </div>
